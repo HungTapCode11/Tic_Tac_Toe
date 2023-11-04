@@ -39,7 +39,6 @@ class Board:
                     pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)
                 return self.squares[0][col]
 
-        # horizontal wins
         for row in range(ROWS):
             if self.squares[row][0] == self.squares[row][1] == self.squares[row][2] != 0:
                 if show:
@@ -48,8 +47,7 @@ class Board:
                     fPos = (WIDTH - 20, row * SQSIZE + SQSIZE // 2)
                     pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)
                 return self.squares[row][0]
-
-        # desc diagonal
+            
         if self.squares[0][0] == self.squares[1][1] == self.squares[2][2] != 0:
             if show:
                 color = CIRC_COLOR if self.squares[1][1] == 2 else CROSS_COLOR
@@ -110,7 +108,6 @@ class AI:
 
     def minimax(self, board, maximizing):
         
-        # terminal case
         case = board.final_state()
 
         # player 1 wins
@@ -155,7 +152,6 @@ class AI:
 
             return min_eval, best_move
 
-    # --- MAIN EVAL ---
 
     def eval(self, main_board):
         if self.level == 0:
@@ -165,8 +161,6 @@ class AI:
         else:
             # minimax algo choice
             eval, move = self.minimax(main_board, False)
-
-        #print(f'AI has chosen to mark the square in pos {move} with an eval of: {eval}')
 
         return move # row, col
 
@@ -180,10 +174,8 @@ class Game:
         self.running = True
         self.show_lines()
 
-    # --- DRAW METHODS ---
 
     def show_lines(self):
-        # bg
         screen.fill( BG_COLOR )
 
         # vertical
@@ -238,8 +230,6 @@ def main():
     board = game.board
     ai = game.ai
 
-    # --- MAINLOOP ---
-
     while True:
         
         # pygame events
@@ -284,14 +274,11 @@ def main():
                     if game.isover():
                         game.running = False
 
-
-        # AI initial call
         if game.gamemode == 'ai' and game.player == ai.player and game.running:
 
             # update the screen
             pygame.display.update()
 
-            # eval
             row, col = ai.eval(board)
             game.make_move(row, col)
 
